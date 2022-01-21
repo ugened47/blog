@@ -4,7 +4,7 @@ const Hero = () => {
   return (
     <section className="grid lg:grid-rows-1 lg:grid-cols-2 items-center justify-between py-8 min-w-screen">
       <div className="flex flex-col items-start justify-center w-full h-full pr-8 mb-10 xl:mb-0">
-        <div className="flex flex-col md:flex-row justify-start items-center">
+        <div className="flex flex-col md:flex-row justify-start md:items-center">
           <div className="w-30 h-30">
             <Image
               src="/static/images/avatar.jpeg"
@@ -18,11 +18,11 @@ const Hero = () => {
               loading="eager"
             />
           </div>
-          <h2 className="ml-2 text-2xl font-extrabold font-display leading-tight sm:text-3xl sm:leading-none md:text-4xl">
+          <h2 className="md:ml-2 text-2xl font-extrabold font-display leading-tight sm:text-3xl sm:leading-none md:text-4xl">
             Eugene Domotenko
           </h2>
         </div>
-        <p className="mt-2 text-lg ">
+        <p className="mt-6 text-lg ">
           Professional full-stack web developer who loves building things using Ruby on Rails,
           Node.js, React and Flutter
         </p>
