@@ -1,11 +1,11 @@
 const siteMetadata = {
-  title: "Gino's dev blog",
+  title: '@ugened dev blog',
   author: 'Eugene Domotenko',
-  headerTitle: 'GinoDev',
-  description: "Gino's dev blog",
+  headerTitle: '@ugened',
+  description: 'Personal dev blog',
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://gino.monster',
+  siteUrl: 'https://eugened.dev',
   siteRepo: 'https://github.com/ugened47/personal-blog',
   siteLogo: '/static/images/logo.png',
   image: '/static/images/avatar.png',
