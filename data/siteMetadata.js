@@ -5,7 +5,7 @@ const siteMetadata = {
   description: "Gino's dev blog",
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://gino.vercel.app',
+  siteUrl: 'https://gino.monster',
   siteRepo: 'https://github.com/ugened47/personal-blog',
   siteLogo: '/static/images/logo.png',
   image: '/static/images/avatar.png',
