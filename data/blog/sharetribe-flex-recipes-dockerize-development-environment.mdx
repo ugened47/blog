@@ -2,8 +2,107 @@
 title: 'Sharetribe Flex missing recipes: Dockerize your development environment'
 date: '2022-01-20'
 tags: ['sharetribe flex', 'marketplace development', 'docker']
-draft: true
+draft: false
 summary: Dockerize your flex dev environment with ease.
 images: []
 layout: PostLayout
 ---
+
+## What is Flex
+
+If you are here, you probably already know what Sharetribe Flex is.
+However, for those who don't - it's a powerful SaaS solution that helps people rapidly prototype, validate and release their marketplaces.
+Flex is a headless API-first marketplace platform that does not restrict you in your ideas. Any kind of marketplace can be built either your members provide services or sell products on your site.
+Check out awesome [Docs](https://www.sharetribe.com/docs/) for more information and a better understanding of Sharetribe Flex.
+
+Every flex marketplace consists of the front-end application and the API provided by Sharetribe, so coding knowledge is required if you'd like to provide customization.
+Luckily for us, the Sharetribe team has already built a few open-source templates for different purposes.
+
+- [FTW-daily](https://github.com/sharetribe/ftw-daily) - rental marketplace with day-based bookings
+- [FTW-hourly](https://github.com/sharetribe/ftw-hourly) - service marketplace with time-based bookings
+- [FTW-product](https://github.com/sharetribe/ftw-product) - product marketplace with stock management
+
+All templates are created using React.js and a tiny Express.js server which is used for server-side rendering and some other purposes.
+
+I'm starting a series of articles to help new marketplace developers understand how to properly extend FTW templates and implement common missing features.
+
+The first topic I'd like to cover is the development
+
+## Development using Docker
+
+In the past years [Docker](https://docker.io) became an industry standard and now helps millions of people to build and ship their applications.
+
+At this stage, we will get our hands dirty by cloning a fresh copy of the flex template.
+
+`git clone git@github.com:sharetribe/ftw-product.git`
+
+`cd ftw-product`
+
+`cp .env-template .env`
+
+Get yourself [mandatory configuration keys](https://www.sharetribe.com/docs/introduction/getting-started-with-ftw-daily/#mandatory-integrations) and add them to your `.env` file.
+
+To containerize your app we'll create these two files:
+
+`touch Dockerfile.dev docker-compose.yml`
+
+Add the following content to `Dockerfile.dev`
+
+```Dockerfile
+# Use LTS version of node to build the container
+FROM node:lts-alpine
+
+# Creates working directory inside the container
+WORKDIR /app
+
+COPY package.json /app
+COPY yarn.lock /app
+
+# Installs dependencies inside the container
+RUN yarn
+
+# Copy rest of files to the container working directory
+COPY . /app
+
+# Internal port to listen to
+EXPOSE 3000
+
+# Execute main command
+CMD ["yarn", "dev"]
+```
+
+I will not pay a lot of attention to what is happening here as there is a lot of information about docker on the web which can describe much better than me.
+However, I've added some comments to the definitions in Dockerfile which are also known as `layers`.
+
+In the next step, we have to define how to run the Dockerfile and make our app up and running. There are multiple ways of doing that.
+We can run a container using CLI but I prefer using docker-compose to manage services in development.
+So let's start with opening `docker-compose.yml` and adding the following content to it.
+
+```yaml
+version: '3.9'
+
+services:
+  web:
+    container_name: ftw-product-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+```
+
+Here we define the service called `web` which is responsible for running our containerized application. `Ports` section defines the mapping between host and container as well as `volumes`.
+If we don't map volumes the changes in files on the host won't be reflected in the container and you'll always have to rebuild an image to see every single change, a really bad dev experience.
+
+At this stage, we're almost done we only have to build and run our up using `docker compose build && docker compose up -d`.
+The process might take a few minutes and after it's finished open `http://localhost:3000` and you should see the landing page of your brand new marketplace.
+Change something in the code and changes will be reflected in the browser thanks to HMR.
+
+So that's it for today! I hope this article will be useful for those who plan to start working with flex.
+
+There are a lot more to come on this and other topics in the future so stay tuned as in the next series I'm going to discover nice-to-have things in flex like background processing, third-party payments, real-time messages, and a lot more.
