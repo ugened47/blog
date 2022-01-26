@@ -26,7 +26,7 @@ All templates are created using React.js and a tiny Express.js server which is u
 
 I'm starting a series of articles to help new marketplace developers understand how to properly extend FTW templates and implement common missing features.
 
-The first topic I'd like to cover is the development
+The first topic I'd like to cover is the dockerizing of the development environment so you don't have to mess with installing local packages and are much closer to the production environment.
 
 ## Development using Docker
 
@@ -92,6 +92,17 @@ services:
       - '/app/node_modules'
     ports:
       - 3000:3000
+    env_file:
+      - .env
+
+  test:
+    container_name: ftw-product-test
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: yarn test
+    environment:
+      - CI=true
     env_file:
       - .env
 ```
