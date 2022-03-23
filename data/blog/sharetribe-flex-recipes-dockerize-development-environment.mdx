@@ -65,7 +65,7 @@ RUN yarn
 COPY . /app
 
 # Internal port to listen to
-EXPOSE 3000
+EXPOSE 3000 3500
 
 # Execute main command
 CMD ["yarn", "dev"]
@@ -92,6 +92,7 @@ services:
       - '/app/node_modules'
     ports:
       - 3000:3000
+      - 3500:3500
     env_file:
       - .env
 

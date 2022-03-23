@@ -1,6 +1,6 @@
 {
-    "name": "Ugened",
-    "short_name": "Ugened",
+    "name": "@ugened.dev",
+    "short_name": "@ugened.dev",
     "icons": [
         {
             "src": "/static/favicons/android-chrome-192x192.png",
